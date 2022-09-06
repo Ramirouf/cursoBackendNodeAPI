@@ -17,32 +17,43 @@ router.get("/:id", (req, res) => {
   //const id = req.params.id;
   const { id } = req.params;
   const product = service.findOne(id);
-  res.json(product);
+  if (product) {
+    res.json({
+      message: "Product found !",
+      product
+    });
+  } else {
+    res.status(404).json({
+      message: "Error. Product not found"
+    })
+  }
+
 })
 
 router.post("/", (req, res) => {
   const body = req.body;
+  const newProduct = service.create(body);
   res.status(201).json({
     message: "Created",
-    data: body,
+    newProduct
   });
 });
 
 router.patch("/:id", (req, res) => {
   const { id } = req.params
   const body = req.body;
+  const product = service.update(id, body);
   res.json({
-    message: "Update",
-    data: body,
-    id,
+    message: "Product modified",
+    product
   });
 });
 
 router.delete("/:id", (req, res) => {
   const { id } = req.params
+  const response = service.delete(id);
   res.json({
-    message: "Deleted",
-    id,
+    response
   });
 });
 

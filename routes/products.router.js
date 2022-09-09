@@ -14,20 +14,25 @@ router.get("/filter", (req, res) => {
   res.send("Im a filter");
 })
 
-router.get("/:id", async (req, res) => {
-  //const id = req.params.id;
-  const { id } = req.params;
-  const product = await service.findOne(id);
-  if (product) {
-    res.json({
-      message: "Product found !",
-      product
-    });
-  } else {
-    res.status(404).json({
-      message: "Error. Product not found"
-    })
+router.get("/:id", async (req, res, next) => {
+  try {
+    //const id = req.params.id;
+    const { id } = req.params;
+    const product = await service.findOne(id);
+    if (product) {
+      res.json({
+        message: "Product found !",
+        product
+      });
+    } else {
+      res.status(404).json({
+        message: "Error. Product not found"
+      })
+    }
+  } catch (error) {
+    next(error)
   }
+
 
 })
 

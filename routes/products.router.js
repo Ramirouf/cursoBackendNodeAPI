@@ -1,4 +1,4 @@
-const { response } = require('express');
+//const { response } = require('express');
 const express = require('express');
 const ProductsService = require("../services/product.service")
 
@@ -45,7 +45,7 @@ router.post("/", async (req, res) => {
   });
 });
 
-router.patch("/:id", async (req, res) => {
+router.patch("/:id", async (req, res, next) => {
   try {
     const { id } = req.params
     const body = req.body;
@@ -55,9 +55,7 @@ router.patch("/:id", async (req, res) => {
       product
     });
   } catch (error) {
-    res.status(404).json({
-      message: error.message
-    })
+    next(error);
   }
 
 });
